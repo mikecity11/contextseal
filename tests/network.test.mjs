@@ -1,0 +1,10 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {requireSuccessfulFinality,transact,permittedAction,parseCase} from '../src/network-core.mjs';
+test('accepted is not finalized success',()=>assert.throws(()=>requireSuccessfulFinality({statusName:'ACCEPTED',txExecutionResultName:'FINISHED_WITH_RETURN'})));
+test('finalized error cannot be reported as success',()=>assert.throws(()=>requireSuccessfulFinality({statusName:'FINALIZED',txExecutionResultName:'FINISHED_WITH_ERROR'})));
+test('unknown execution is blocked',()=>assert.throws(()=>requireSuccessfulFinality({statusName:'FINALIZED'})));
+test('Studio receipt success is recognized',()=>assert.equal(requireSuccessfulFinality({status:'FINALIZED',consensus_data:{leader_receipt:[{genvm_result:'FINISHED_WITH_RETURN'}]}}),true));
+test('write polls to finalized successful execution',async()=>{let n=0,hashSeen;const client={writeContract:async a=>{assert.equal(a.leaderOnly,false);return '0x'+'a'.repeat(64)},getTransaction:async()=>++n===1?{statusName:'ACCEPTED'}:{statusName:'FINALIZED',txExecutionResultName:'FINISHED_WITH_RETURN'}};await transact({client,address:'0x123',functionName:'review_edit',args:['id'],interval:0,onHash:h=>hashSeen=h});assert.equal(n,2);assert.equal(hashSeen.length,66);});
+test('failed consensus is terminal',async()=>assert.rejects(()=>transact({client:{writeContract:async()=>'0x'+'a'.repeat(64),getTransaction:async()=>({statusName:'UNDETERMINED'})},args:[],interval:0}),/UNDETERMINED/));
+test('brand-only actions and revision checks',()=>{const c={brand:'0xBrand',accepted:false,revision:0,reviewed_revision:0};assert.equal(permittedAction(c,'0xOther','accept'),false);assert.equal(permittedAction(c,'0xBrand','accept'),true);assert.equal(permittedAction(c,'0xBrand','submit'),false);assert.equal(permittedAction({...c,accepted:true},'0xBrand','submit'),true);assert.equal(permittedAction({...c,accepted:true,revision:1},'0xOther','review'),true);});
+test('malformed case responses rejected',()=>assert.throws(()=>parseCase('{}')));
