@@ -13,6 +13,6 @@ Each validator runs the same evidence evaluation from immutable contract state a
 Connect wallet -> verify exact contract source -> register -> accept -> submit -> request review -> wait for finalized successful execution -> read canonical state. An RPC or execution error never substitutes a canned verdict. A still-pending hash is saved; resubmission is blocked until tracking is resumed or explicitly forgotten. Forgetting tracking does not cancel a transaction.
 
 ## Remaining gates
-Deploying to Studio sends the source to the public GenLayer service and records contracts publicly. Automatic approval review rejected source submission without specific user approval. Do not attempt schema submission or deployment until it is granted. Use only test accounts/test tokens for validation.
+The user approved public source submission and StudioNet deployment on 14 October 2026. Contract `0x83E2Faf2d733E4B32d8eFC017398CD9e1832D505` is deployed with finalized successful execution. Use only test accounts/test tokens for validation. The frontend verifies its exact source before writes.
 
 Before a real pilot, execute retained-warning, removed-warning, allowed-paraphrase, missing-context and adversarial-transcript cases with multiple validators and two identities. Validate wallet UI and actual receipt shape. Contract/source compatibility must be checked against the running network.

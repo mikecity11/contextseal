@@ -6,7 +6,8 @@ const $=id=>document.getElementById(id);
 const readClient=createClient({chain:studionet});
 let wallet=null,client=null,address=null,activeCase=null,busy=false;
 const STORE='contextseal-network-v1';
-let saved={address:'',caseId:'',pending:null};try{saved={...saved,...JSON.parse(localStorage.getItem(STORE)||'{}')};}catch{}
+const DEFAULT_CONTRACT='0x83E2Faf2d733E4B32d8eFC017398CD9e1832D505';
+let saved={address:DEFAULT_CONTRACT,caseId:'',pending:null};try{saved={...saved,...JSON.parse(localStorage.getItem(STORE)||'{}')};}catch{}if(!saved.address)saved.address=DEFAULT_CONTRACT;
 function save(){try{localStorage.setItem(STORE,JSON.stringify(saved));}catch{notify('Browser storage unavailable. Save any transaction hash before leaving.');}}
 function notify(s){$('network-notice').textContent=s;}
 function escape(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
@@ -31,3 +32,4 @@ $('net-clear-pending').onclick=()=>{if(!saved.pending)return;if(confirm('Forget 
 $('contract-address').value=saved.address;$('case-id').value=saved.caseId;if(saved.pending)showHash(saved.pending.hash);
 window.ethereum?.on?.('accountsChanged',()=>{wallet=null;client=null;controls();renderCase();notify('Wallet account changed. Reconnect to sign.');});window.ethereum?.on?.('chainChanged',()=>{wallet=null;client=null;controls();renderCase();notify('Network changed. Reconnect to StudioNet before signing.');});
 draftOptions();controls();renderCase();
+safe(attach)();

@@ -1,5 +1,5 @@
 export function statusOf(tx){return tx.statusName||tx.status_name||(typeof tx.status==='string'?tx.status:'UNKNOWN');}
-export function executionOf(tx){const leaders=tx.consensus_data?.leader_receipt;const r=Array.isArray(leaders)?leaders.at(-1):leaders;return tx.txExecutionResultName||tx.genvm_result||r?.genvm_result||r?.execution_result||r?.result;}
+export function executionOf(tx){const leaders=tx.consensus_data?.leader_receipt;const r=Array.isArray(leaders)?(leaders.findLast(x=>x.mode==='leader')||leaders.at(-1)):leaders;if(r?.execution_result==='SUCCESS'&&r?.result?.status==='return'&&!r?.genvm_result?.raw_error&&!r?.genvm_result?.error_code)return 'FINISHED_WITH_RETURN';return tx.txExecutionResultName||tx.genvm_result||r?.genvm_result||r?.execution_result||r?.result;}
 export function requireSuccessfulFinality(tx){
  if(statusOf(tx)!=='FINALIZED')throw Error('Transaction is not finalized.');
  const execution=executionOf(tx);

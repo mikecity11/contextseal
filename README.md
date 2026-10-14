@@ -25,9 +25,11 @@ Serve `dist/` over HTTPS. Vercel builds it with the included `vercel.json`.
 - Pending hashes survive refresh and can be resumed without resubmitting.
 
 ## Deployment status
-Contract deployment is pending explicit source-disclosure approval for https://studio.genlayer.com/api. There is no configured live contract address and no claim of completed network validation. Wallet integration is implemented, but live writes require a deployed, verified contract.
+Contract deployed on StudioNet at `0x83E2Faf2d733E4B32d8eFC017398CD9e1832D505`.
+Deployment transaction: `0xa1240a8a374905455fdbf2900d27b8f7e7e8eabe6dc1565908607858e2003fc1`, finalized with successful execution and validator agreement.
+The app loads this address by default and checks the exact deployed source before enabling writes.
 
-`contracts/contextseal.py` is the contract source. Deploy its zero-argument constructor in GenLayer Studio or via SDK after approval, then load its address in the app. Validate SDK lint and direct tests before treating it as release-ready.
+`contracts/contextseal.py` is the deployed contract source. Live workflow validation is in progress.
 
 ## Checks
 - Browser-local workspace functional harness passes.
@@ -35,6 +37,6 @@ Contract deployment is pending explicit source-disclosure approval for https://s
 - `npm run build` passes.
 - Python syntax parses.
 - All 10 official GenVM direct tests pass using pinned SDK release v0.2.16. They cover wallet roles, immutable baselines, consensus agreement/disagreement, quotes, revisions and abstention.
-- Live consensus, wallet UI and contract deployment have not yet been verified.
+- Contract deployment and source verification pass. Live edit-review validation is in progress; interactive wallet UI remains to be verified.
 
 See `docs/research.md` and `docs/integration.md` for scope and remaining gates.
