@@ -17,7 +17,9 @@ Serve `dist/` over HTTPS. Vercel builds it with the included `vercel.json`.
 
 ## GenLayer connection
 - `genlayer-js` 1.1.8, StudioNet chain 61999.
-- Injected EVM wallet only; no backend signer or stored private key.
+- Injected EVM wallet sign-in: account selection, StudioNet switching and a locally verified personal-sign message bound to this origin.
+- Sign-in lasts one hour in memory; refresh, sign-out, account change or network change requires signing in again. This is a local wallet ownership check, not a server authentication session.
+- No backend signer or stored private key; each write needs separate wallet approval.
 - Contract address must be loaded and its source compared with the bundled source before writes.
 - Creator registers an agreement, brand accepts and submits an edit, anyone can request review.
 - Wallet signs every write. No leader-only shortcut.
