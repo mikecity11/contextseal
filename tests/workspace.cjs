@@ -1,12 +1,12 @@
 const vm=require('node:vm'),fs=require('node:fs'),assert=require('node:assert/strict');
-const nodes={};const storage={};
+const nodes={};const storage={};const draftEvents=[];
 const node=id=>nodes[id]??=( {value:'',textContent:'',innerHTML:'',classList:{toggle(){}},querySelectorAll(){return []},addEventListener(){},scrollIntoView(){}} );
-const ctx={console,URL,Blob,TextEncoder,setTimeout,Date,crypto:require('node:crypto').webcrypto,confirm:()=>true,localStorage:{getItem:k=>storage[k]??null,setItem:(k,v)=>storage[k]=v},document:{getElementById:node,querySelectorAll:()=>[],createElement:()=>({click(){}})},FormData:class{constructor(d){this.d=d}get(k){return this.d[k]??''}has(k){return !!this.d[k]}}};
+const ctx={Event,console,URL,Blob,TextEncoder,setTimeout,Date,crypto:require('node:crypto').webcrypto,confirm:()=>true,localStorage:{getItem:k=>storage[k]??null,setItem:(k,v)=>storage[k]=v},document:{dispatchEvent:e=>draftEvents.push(e.type),getElementById:node,querySelectorAll:()=>[],createElement:()=>({click(){}})},FormData:class{constructor(d){this.d=d}get(k){return this.d[k]??''}has(k){return !!this.d[k]}}};
 vm.createContext(ctx);const source=fs.readFileSync('dist/app.js','utf8');vm.runInContext(source,ctx);
 async function main(){
 const agreement={title:'<img src=x onerror=alert(1)>',creator:'Creator',brand:'Brand',channel:'X',expires:'2099-12-31',originalUrl:'https://example.com/original',rules:'Preserve the warning',attribution:true};
 node('agreement-form').onsubmit({preventDefault(){},target:agreement});
-assert.equal(JSON.parse(storage['contextseal-v1']).agreements.length,1);
+assert.equal(JSON.parse(storage['contextseal-v1']).agreements.length,1);assert.equal(draftEvents.at(-1),'contextseal:drafts-changed');
 assert(!node('record-list').innerHTML.includes('<img src=x'));
 const id=JSON.parse(storage['contextseal-v1']).agreements[0].id;
 await node('evidence-form').onsubmit({preventDefault(){},target:{agreementId:id,originalText:'I like it but there are risks.',editedText:'I like it.',editedUrl:'https://example.com/edit',concern:'Warning removed',reset(){}}});

@@ -3,7 +3,7 @@ const KEY='contextseal-v1';
 let data={agreements:[],packets:[]};
 try{const d=JSON.parse(localStorage.getItem(KEY));if(d&&Array.isArray(d.agreements)&&Array.isArray(d.packets))data=d;}catch{message('Saved drafts could not be loaded. You can create a new draft.');}
 function message(s){document.getElementById('notice').textContent=s;}
-function persist(){try{localStorage.setItem(KEY,JSON.stringify(data));return true;}catch{message('Browser storage is unavailable. Export your drafts before leaving.');return false;}}
+function persist(){try{localStorage.setItem(KEY,JSON.stringify(data));document.dispatchEvent?.(new Event('contextseal:drafts-changed'));return true;}catch{message('Browser storage is unavailable. Export your drafts before leaving.');return false;}}
 function escapeHtml(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function show(id){document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('hidden',p.id!==id));document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.panel===id));render();}
 document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>show(b.dataset.panel)));
