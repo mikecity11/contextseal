@@ -16,3 +16,6 @@ Connect wallet -> verify exact contract source -> register -> accept -> submit -
 The user approved public source submission and StudioNet deployment on 14 October 2026. Contract `0x83E2Faf2d733E4B32d8eFC017398CD9e1832D505` is deployed with finalized successful execution. Use only test accounts/test tokens for validation. The frontend verifies its exact source before writes.
 
 Before a real pilot, execute retained-warning, removed-warning, allowed-paraphrase, missing-context and adversarial-transcript cases with multiple validators and two identities. Validate wallet UI and actual receipt shape. Contract/source compatibility must be checked against the running network.
+
+## Live validation — 14 October 2026
+Separate disposable creator and brand test accounts completed registration, acceptance and edit submission. Review transaction `0xe1d9974ee7716899c36989ac0e7d5bb70dbddb895ce5915e3796755d33df2cac` finalized successfully. Case `live-warning-1791966620598` records OUTSIDE_RULES, with exact supporting quotes identifying removed risk warnings and added guaranteed returns. Other scenario gates above and user-wallet signing remain unverified.

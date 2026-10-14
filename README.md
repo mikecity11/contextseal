@@ -29,7 +29,7 @@ Contract deployed on StudioNet at `0x83E2Faf2d733E4B32d8eFC017398CD9e1832D505`.
 Deployment transaction: `0xa1240a8a374905455fdbf2900d27b8f7e7e8eabe6dc1565908607858e2003fc1`, finalized with successful execution and validator agreement.
 The app loads this address by default and checks the exact deployed source before enabling writes.
 
-`contracts/contextseal.py` is the deployed contract source. Live workflow validation is in progress.
+`contracts/contextseal.py` is the deployed contract source. A live two-wallet flow passed: creator registration, brand acceptance, edit submission and finalized validator review. Test case `live-warning-1791966620598` returned `OUTSIDE_RULES` for removing the risk warning and adding guaranteed returns.
 
 ## Checks
 - Browser-local workspace functional harness passes.
@@ -37,6 +37,6 @@ The app loads this address by default and checks the exact deployed source befor
 - `npm run build` passes.
 - Python syntax parses.
 - All 10 official GenVM direct tests pass using pinned SDK release v0.2.16. They cover wallet roles, immutable baselines, consensus agreement/disagreement, quotes, revisions and abstention.
-- Contract deployment and source verification pass. Live edit-review validation is in progress; interactive wallet UI remains to be verified.
+- Contract deployment and source verification pass. Live edit review passed with a finalized OUTSIDE_RULES verdict and supporting quotes. Browser signing with a user wallet remains to be tested.
 
 See `docs/research.md` and `docs/integration.md` for scope and remaining gates.
